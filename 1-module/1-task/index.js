@@ -15,4 +15,3 @@ function factorial(n) {
     return factorial;
  }
 }
-factorial(2);
