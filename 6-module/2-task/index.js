@@ -42,5 +42,6 @@ export default class ProductCard {
     });
 
     this.elem = elem;
+    this.product = product;
   }
 }
