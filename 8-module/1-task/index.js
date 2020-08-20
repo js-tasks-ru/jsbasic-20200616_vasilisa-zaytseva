@@ -5,19 +5,10 @@ export default class CartIcon {
     this.render();
 
     this.addEventListeners();
-    
-    Object.assign(this.elem.style, {
-      position: 'fixed',
-      top: '',
-      left: '',
-      zIndex: ''
-    });
-    this.initialTopCoordinate = this.elem.getBoundingClientRect().top + window.pageYOffset;
   }
 
   render() {
     this.elem = createElement('<div class="cart-icon"></div>');
-    
   }
 
   update(cart) {
@@ -42,42 +33,53 @@ export default class CartIcon {
     }
   }
 
+  updatePosition() {
+
+    if (!this.elem.offsetHeight) {return;} // not visible
+
+    if (!this.initialTopCoord) {
+      this.initialTopCoord = this.elem.getBoundingClientRect().top + window.pageYOffset;
+    }
+
+    if (document.documentElement.clientWidth <= 767) {
+      // mobile: cart is always fixed
+      this.resetPosition();
+      return;
+    }
+
+    let isHeaderCartScrolled = window.pageYOffset > this.initialTopCoord;
+
+    if (isHeaderCartScrolled) {
+      this.fixPosition();
+    } else {
+      this.resetPosition();
+    }
+  }
+
+  fixPosition() {
+    Object.assign(this.elem.style, {
+      position: 'fixed',
+      top: '50px',
+      zIndex: 1e3,
+      left: Math.min(
+        // справа от содержимого (определяем по первому контейнеру в нашей вёрстке)
+        document.querySelector('.container').getBoundingClientRect().right + 20,
+        document.documentElement.clientWidth - this.elem.offsetWidth - 10
+      ) + 'px'
+    });
+  }
+
+  resetPosition() {
+    Object.assign(this.elem.style, {
+      position: '',
+      top: '',
+      left: '',
+      zIndex: ''
+    });
+  }
+
   addEventListeners() {
     document.addEventListener('scroll', () => this.updatePosition());
     window.addEventListener('resize', () => this.updatePosition());
-  }
-
-  updatePosition() {
-    if (!this.initialTopCoordinate) {
-      this.initialTopCoordinate = this.elem.getBoundingClientRect().top + window.pageYOffset;
-    }
-    let leftIndent = Math.min(
-      document.querySelector('.container').getBoundingClientRect().right + 20,
-      document.documentElement.clientWidth - this.elem.offsetWidth - 10
-    );
-    if (window.pageYOffset > this.initialTopCoordinate) {
-      Object.assign(this.elem.style, {
-        position: 'fixed',
-        top: '50px',
-        zIndex: 1e3,
-        left: `${leftIndent}px`
-      });
-    } else {
-      Object.assign(this.elem.style, {
-        position: 'fixed',
-        top: '',
-        left: '',
-        zIndex: ''
-      });
-    }
-    if (document.documentElement.clientWidth <= 767) {
-      console.log('mobile');
-      Object.assign(this.elem.style, {
-        position: '',
-        top: '',
-        left: '',
-        zIndex: ''
-      });
-    }
   }
 }
