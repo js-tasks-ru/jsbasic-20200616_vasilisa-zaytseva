@@ -49,6 +49,7 @@ export default class Modal {
         document.body.classList.remove('is-modal-open');
       }
     });
+    this.elem = modal;
   }
 
   open() {

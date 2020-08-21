@@ -33,14 +33,16 @@ export default class ProductCard {
     button.appendChild(img2);
     img2.setAttribute('src', '/assets/images/icons/plus-icon.svg');
     img2.setAttribute('alt', 'icon');
+    const productId = product.id;
     button.addEventListener('click', () => {
       let event = new CustomEvent("product-add", { 
-        detail: product.id, 
+        detail: productId, 
         bubbles: true 
       });
       elem.dispatchEvent(event);
     });
 
     this.elem = elem;
+    this.product = product;
   }
 }
