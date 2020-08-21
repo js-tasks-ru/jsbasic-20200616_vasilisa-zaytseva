@@ -36,7 +36,9 @@ export default class Main {
 
     document.body.addEventListener('product-add', ({ detail: productId }) => {
       let product = this.products.find(product => product.id == productId);
-      this.cart.addProduct(product);
+      if (product != undefined) {
+        this.cart.addProduct(product);
+      }
     });
 
     this.stepSlider.elem.addEventListener('slider-change', ({ detail: value }) => {

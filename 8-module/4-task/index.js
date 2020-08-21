@@ -107,7 +107,6 @@ export default class Cart {
   }
 
   renderModal() {
-    console.log('renderModal');
 
     this.modal = new Modal();
 
