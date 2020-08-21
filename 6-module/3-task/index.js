@@ -66,10 +66,11 @@ export default class Carousel {
       button.appendChild(img2);
       img2.setAttribute('src', '/assets/images/icons/plus-icon.svg');
       img2.setAttribute('alt', 'icon');
+      const slideId = slide.id;
 
       button.addEventListener('click', () => {
         let event = new CustomEvent("product-add", { 
-          detail: slide.id, 
+          detail: slideId, 
           bubbles: true 
         });
         elem.dispatchEvent(event);

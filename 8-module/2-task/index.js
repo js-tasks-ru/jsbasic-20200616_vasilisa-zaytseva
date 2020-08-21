@@ -28,16 +28,20 @@ export default class ProductGrid {
 
 
     productSelector (product,filters) {
-      if (filters.hasOwnProperty('maxSpiciness') && (filters.maxSpiciness < product.spiciness)) {
+      if (filters.maxSpiciness !== undefined && filters.maxSpiciness < product.spiciness) {
+        console.log("Filtered out too spicy");
         return false;
       }
       if (filters.noNuts && product.nuts === true) {
+        console.log("Filtered out as contains nuts");
         return false; 
       }
-      if (filters.hasOwnProperty('category') && filters.category != "" && filters.category != product.category) {
-       return false;
+      if (filters.category !== undefined && filters.category != "" && filters.category != product.category) {
+        console.log("Filtered out as wrong category", filters);
+        return false;
       }
       if (filters.vegeterianOnly && product.vegeterian !== true){
+        console.log("Filtered out as non vegeterian");
         return false;
       }  
       return true;
@@ -46,14 +50,18 @@ export default class ProductGrid {
 
     updateFilter(filters){
       for(var k in filters) this.filters[k]=filters[k];
+      console.log("Update filter ", filters)
       for (let productCard of this.productCards) {
-        
         if (this.productSelector(productCard.product, this.filters)) {
+          console.log("Match seletctor ", productCard.product)
           if (!this.productsGridInner.contains(productCard.elem)) {
+            console.log("Append ", productCard.product)
             this.productsGridInner.appendChild(productCard.elem);
           }
         } else { 
+          console.log("Not Match seletctor ", productCard.product)
           if (this.productsGridInner.contains(productCard.elem)) {
+            console.log("Remove ", productCard.product)
             this.productsGridInner.removeChild(productCard.elem);
           }
         }
